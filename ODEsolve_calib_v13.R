@@ -10,7 +10,7 @@
 
 ## Module set-up ##
 rm(list=ls())
-setwd("C:/Users/Xiao/Dropbox/R code/Casacades model R code/Cascades model-HERU_v2")
+#setwd("C:/Users/Xiao/Dropbox/R code/Casacades model R code/Cascades model-HERU_v2")
 #setwd("C:/Users/jason/Dropbox/R code/Casacades model R code/Cascades model-HERU")
 library(dfoptim) #for calibration function nmkb
 source("ode_model_func_v10.R")   #ode function module
