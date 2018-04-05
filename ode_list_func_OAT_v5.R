@@ -35,11 +35,11 @@
   # oat.q: OAT dropout rate
   # eta: PrEP entry rate
 
-ode_list_OAT=function(x,x.offoat,beta_o,beta_s,gamma,rho,ws,wp,mu_mat,mo, eta,
-                  psi,psi.p,theta.ai,theta.ad,phi,v2,v3,
-                  alpha,alpha.re,theta.1,theta.2,theta.t12,theta.t13,
-                  theta.t21,theta.t23,theta.t31,theta.t32,
-                  theta.t1O,theta.t2O,theta.t3O,
+ode_list_OAT=function(x, x.offoat, beta_o, beta_s, gamma, rho, ws, wp, mu_mat, mo, eta,
+                  psi, psi.p, theta.ai, theta.ad, phi, v2, v3,
+                  alpha, alpha.re, theta.1, theta.2, theta.t12, theta.t13,
+                  theta.t21, theta.t23, theta.t31, theta.t32,
+                  theta.t1O, theta.t2O, theta.t3O,
                   oat.e, oat.q, rho.m) {
 
 S1=x[1];  S2=x[2];  Sp=x[3];
