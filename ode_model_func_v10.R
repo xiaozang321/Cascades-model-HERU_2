@@ -69,7 +69,6 @@ source("FoI_JM_v9_ass_low.R")
 # nOAT: number of PWID enrolled in OAT, by gender and ethnicity (9 groups)
 # theta.o.oat: multiplier for ART dropout rate among PWID on OAT
 # v.ssp: number of syringes distributed
-# eff.ssp: effect of ssp
 # names.gp: 42 group names
 # names18: 18 group names (collapsing onOAT/offOAT, high/low)
 # init.tot: initial total population for 18 groups
@@ -185,7 +184,7 @@ ode_model=function(t, x, vparameters){
 
      # sufficient contact rate (y2=y[,1:19], excluding incidence/new diagnosis)
      foi= FoI(y=y2, no=no, uoC=uoC, ns=ns, usC=usC, eO=ass.eO, eS=ass.eS, sigmaFM=sigmaFM, sigmaMF=sigmaMF, sigmaM=sigmaM, tau=tau.all,
-              eff.prep=eff.prep, d=d, s=s.all, eff.oat=eff.oat, cov.ssp=cov.ssp.all, eff.ssp=eff.ssp, s.multi=s.multi, trans.red=trans.red.all, bal)
+              eff.prep=eff.prep, d=d, s=s.all, eff.oat=eff.oat, cov.ssp=cov.ssp.all, s.multi=s.multi, trans.red=trans.red.all, bal)
      # the function returns matrix of dim c(n.gp,2) with row of each group. 
      # second column for PrEP
     
