@@ -21,13 +21,12 @@
   # s: proportion of injections that are shared (9 groups)
   # eff.oat: % reduction in # of shared injections reduced due to OAT
   # cov.ssp: coverage of syringe services program
-  # eff.ssp: effect of ssp
   # outputs: matrix of dim c(n.gp,2) with row of each group. second column for PrEP
 
 
 # sufficient contact rate
 FoI=function(y, no, uoC, ns, usC, eO,eS, sigmaFM, sigmaMF, sigmaM, tau, eff.prep, d, s, 
-             eff.oat, cov.ssp, eff.ssp, s.multi, trans.red, bal=F){
+             eff.oat, cov.ssp, s.multi, trans.red, bal=F){
 
   #### indicator for gender, ethnicity, risk groups ####
   names.gp = row.names(y)
@@ -60,12 +59,12 @@ FoI=function(y, no, uoC, ns, usC, eO,eS, sigmaFM, sigmaMF, sigmaM, tau, eff.prep
     # low risk
     k.delta.l = matrix(0, 3, length(ind))
     l.loc = match(ind.low, ind) #indicates location of het.low among ind
-    k.delta.l[,l.loc] = diag(1,3,3)
+    k.delta.l[ ,l.loc] = diag(1, 3, 3)
     k.delta.l = cbind(k.delta.l, k.delta.l)
     # high risk
     k.delta.h = matrix(0, 3, length(ind))
     h.loc = setdiff(1:length(ind), l.loc)
-    k.delta.h[,h.loc] = diag(1,3,3)
+    k.delta.h[ ,h.loc] = diag(1, 3, 3)
     k.delta.h = cbind(k.delta.h, k.delta.h)
     # combine low/high
     k.delta   = rbind(k.delta.l, k.delta.h) # 6 x length(ind)*2
@@ -233,9 +232,9 @@ FoI=function(y, no, uoC, ns, usC, eO,eS, sigmaFM, sigmaMF, sigmaM, tau, eff.prep
   # PWID not on OAT
   ind = setdiff(all.idu, oat)
   ds  = d*s
-  ds.all[ind] = ds[ind]* ((1-cov.ssp[ind]) + cov.ssp[ind]*(1-eff.ssp))
+  ds.all[ind] = ds[ind]* (1-cov.ssp[ind])
   # PWID on OAT
-  ds.all[oat] = ds[oat]* (1-eff.oat)* ((1-cov.ssp[oat]) + (1-eff.ssp) *cov.ssp[oat])
+  ds.all[oat] = ds[oat]* (1-eff.oat)* (1-cov.ssp[oat])
 
   # if diagnosed, sharing prob gets decreased by s.multi
   ds.all2 = matrix(ds.all, n.gp, 19)
