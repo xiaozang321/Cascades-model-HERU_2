@@ -75,11 +75,12 @@ gp.gn.fun = function (names.gp){
   H.f      = intersect(high, female)
   L.m      = intersect(low, male)
   L.f      = intersect(low, female)
+  OAT      = grep("OAT", names.gp)
   return(list(white=white, black=black, hisp=hisp, female=female, male=male, 
               low=low, high=high, all.msm=all.msm, all.pwid=all.pwid, 
               msm=msm, pwid=pwid, mwid=mwid, het=het, het.m=het.m, het.f=het.f,
               pwid.m=pwid.m, pwid.f=pwid.f, H.allmsm=H.allmsm, L.allmsm=L.allmsm, 
               H.het.m=H.het.m, H.het.f=H.het.f, L.het.m=L.het.m, L.het.f=L.het.f,
-              H.m=H.m, H.f=H.f, L.m=L.m,  L.f=L.f))
+              H.m=H.m, H.f=H.f, L.m=L.m,  L.f=L.f, OAT=OAT))
 }
 
