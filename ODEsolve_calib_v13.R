@@ -21,30 +21,45 @@ write.excel <- function(tab, ...) write.table( tab, "clipboard", sep="\t", row.n
 
 ## Read in data and all inputs ##
 city = "NYC"
-source ("Data_input_2.R")
+source ("Data_input_v4.R")
 # output: vparameters, vt (time step), x (all initials in vector), calpar (calibration data), target data
 
 ## The GOF with point estimates ##
 #print(system.time())
-obj (calib.par =calpar$initial, calpar.info =calpar.info, fixed =vparameters, 
-     calib.target =calib.target, valid.target =valid.target, plot =F)
+obj (calib.par =calpar$pe, calpar.info =calpar.info, fixed =vparameters, fixed.list =vlist,
+     calib.target =calib.target, valid.target =valid.target, plot =T)
 
 
 ###### Model calibration ######
 #Nelder-Mead should not be used for high-dimensional optimization
 # maximum # of parameters for nmk is 30 
-nm <- nmkb(par = calpar$initial, fn = obj,
-          lower = calpar$low, upper = calpar$high,
-          calpar.info = calpar.info, fixed = vparameters, 
+nm <- nmkb(par = calpar$pe, fn = obj,
+          lower = calpar$lower, upper = calpar$upper,
+          calpar.info = calpar.info, fixed = vparameters, fixed.list =vlist,
           calib.target = calib.target, valid.target = valid.target, plot=F)
 
-obj (calib.par = nm$par, calpar.info = calpar.info, fixed = vparameters, 
+obj (calib.par = nm$par, calpar.info = calpar.info, fixed = vparameters, fixed.list =vlist,
      calib.target = calib.target, valid.target = valid.target, plot=T)
 
 write.excel(nm$par)
 
+
+
+#### Random sampling to obtain multiple starting values ####
+
 # save obj function for one calibration:
 sink("obj_10.txt")
+
+# random sampling
+
+nsample = 10            #currently set 10 to reduce computing time
+npar    = nrow (calpar)
+set.seed(5484561)
+
+
+
+
+
 
 
 ###### Latin hypercube sampling to get 1,000 simplexes for calibration######
@@ -52,7 +67,7 @@ sink("obj_10.txt")
 library(FME)
 parRange <- data.frame(min =calpar$low, max =calpar$high)
 
-nsample = 1000            #currently set 10 to reduce computing time
+nsample = 10            #currently set 10 to reduce computing time
 npar    = nrow (calpar)
 set.seed(5484561)
 
