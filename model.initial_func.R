@@ -71,7 +71,7 @@ model.initial = function(par, diag18){
     init[high,"S"]  = init[high, "S"] *prop.high.sus.all[high]
     init[low,"S"]   = init[low, "S"]  *(1 - prop.high.sus.all[high])
     init[high, c("I","D","T","O")] = init[high, c("I","D","T","O")] *prop.high.inf.all[high]
-    init[low ,c("I","D","T","O")]  = init[low,  c("I","D","T","O")] *(1-prop.high.inf.all[high])
+    init[low , c("I","D","T","O")] = init[low,  c("I","D","T","O")] *(1-prop.high.inf.all[high])
 
     # 19 states
     S2 = prop.S2 *init[ ,"S"]
