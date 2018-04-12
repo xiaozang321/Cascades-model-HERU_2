@@ -213,18 +213,21 @@ phi1_ = numeric(length(names18)); phi2_ = numeric(length(names18)); phi3_ = nume
 p1 = numeric(length(names18))
 alpha1_ = numeric(length(names18)); alpha2_ = numeric(length(names18)); alpha3_ = numeric(length(names18))
 
-phi1_[gp18.gn$all.msm] = with(vlist$phi1_, pe[risk == "msm"])
+phi1_[gp18.gn$msm]     = with(vlist$phi1_, pe[risk == "msm"])
 phi1_[gp18.gn$pwid]    = with(vlist$phi1_, pe[risk == "pwid"])
+phi1_[gp18.gn$mwid]    = with(vlist$phi1_, pe[risk == "mwid"])
 phi1_[gp18.gn$het.m]   = with(vlist$phi1_, pe[risk == "het" & gender == "m"])
 phi1_[gp18.gn$het.f]   = with(vlist$phi1_, pe[risk == "het" & gender == "f"])
 
-phi2_[gp18.gn$all.msm] = with(vlist$phi2_, pe[risk == "msm"])
+phi2_[gp18.gn$msm]     = with(vlist$phi2_, pe[risk == "msm"])
 phi2_[gp18.gn$pwid]    = with(vlist$phi2_, pe[risk == "pwid"])
+phi2_[gp18.gn$mwid]    = with(vlist$phi2_, pe[risk == "mwid"])
 phi2_[gp18.gn$het.m]   = with(vlist$phi2_, pe[risk == "het" & gender == "m"])
 phi2_[gp18.gn$het.f]   = with(vlist$phi2_, pe[risk == "het" & gender == "f"])
 
-phi3_[gp18.gn$all.msm] = with(vlist$phi3_, pe[risk == "msm"])
+phi3_[gp18.gn$msm]     = with(vlist$phi3_, pe[risk == "msm"])
 phi3_[gp18.gn$pwid]    = with(vlist$phi3_, pe[risk == "pwid"])
+phi3_[gp18.gn$mwid]    = with(vlist$phi3_, pe[risk == "mwid"])
 phi3_[gp18.gn$het.m]   = with(vlist$phi3_, pe[risk == "het" & gender == "m"])
 phi3_[gp18.gn$het.f]   = with(vlist$phi3_, pe[risk == "het" & gender == "f"])
 
@@ -235,17 +238,23 @@ p1[gp18.gn$het.f] = with(vlist$p1, pe[risk == "het" & gender == "f"])
 p1[gp18.gn$msm]   = with(vlist$p1, pe[risk == "msm"])
 p1[gp18.gn$mwid]  = with(vlist$p1, pe[risk == "mwid"])
 
-alpha1_[gp18.gn$all.msm] = with(vlist$alpha1_, pe[risk == "msm"])
-alpha1_[gp18.gn$pwid]    = with(vlist$alpha1_, pe[risk == "pwid"])
-alpha1_[gp18.gn$het]     = with(vlist$alpha1_, pe[risk == "het"])
+alpha1_[gp18.gn$msm]   = with(vlist$alpha1_, pe[risk == "msm"])
+alpha1_[gp18.gn$mwid]  = alpha1_[gp18.gn$msm]
+alpha1_[gp18.gn$pwid]  = with(vlist$alpha1_, pe[risk == "pwid"])
+alpha1_[gp18.gn$het.m] = with(vlist$alpha1_, pe[risk == "het" & gender == "m"])
+alpha1_[gp18.gn$het.f] = with(vlist$alpha1_, pe[risk == "het" & gender == "f"])
 
-alpha2_[gp18.gn$all.msm] = with(vlist$alpha2_, pe[risk == "msm"])
-alpha2_[gp18.gn$pwid]    = with(vlist$alpha2_, pe[risk == "pwid"])
-alpha2_[gp18.gn$het]     = with(vlist$alpha2_, pe[risk == "het"])
+alpha2_[gp18.gn$msm]   = with(vlist$alpha2_, pe[risk == "msm"])
+alpha2_[gp18.gn$mwid]  = alpha2_[gp18.gn$msm]
+alpha2_[gp18.gn$pwid]  = with(vlist$alpha2_, pe[risk == "pwid"])
+alpha2_[gp18.gn$het.m] = with(vlist$alpha2_, pe[risk == "het" & gender == "m"])
+alpha2_[gp18.gn$het.f] = with(vlist$alpha2_, pe[risk == "het" & gender == "f"])
 
-alpha3_[gp18.gn$all.msm] = with(vlist$alpha3_, pe[risk == "msm"])
-alpha3_[gp18.gn$pwid]    = with(vlist$alpha3_, pe[risk == "pwid"])
-alpha3_[gp18.gn$het]     = with(vlist$alpha3_, pe[risk == "het"])
+alpha3_[gp18.gn$msm]   = with(vlist$alpha3_, pe[risk == "msm"])
+alpha3_[gp18.gn$mwid]  = alpha3_[gp18.gn$msm]
+alpha3_[gp18.gn$pwid]  = with(vlist$alpha3_, pe[risk == "pwid"])
+alpha3_[gp18.gn$het.m] = with(vlist$alpha3_, pe[risk == "het" & gender == "m"])
+alpha3_[gp18.gn$het.f] = with(vlist$alpha3_, pe[risk == "het" & gender == "f"])
 
 vparameters$phi1 = phi1_ * p1
 vparameters$phi2 = phi2_ * p1
