@@ -20,7 +20,7 @@
 
 require(deSolve)
 
-obj <- function(calib.par, calpar.info, fixed, calib.target, valid.target, plot=F) { 
+obj <- function(calib.par, calpar.info, fixed, fixed.list, calib.target, valid.target, plot=F) { 
  
   # Attain inputs for objective function
   names.gp   = as.vector(fixed$names.gp)
@@ -29,7 +29,6 @@ obj <- function(calib.par, calpar.info, fixed, calib.target, valid.target, plot=
   state.name = fixed$state.name
   leng   = calpar.info$plength
   names  = calpar.info$names
-  groups = calpar.info$groups
   
   diag.obs  = calib.target$diag18.obs [-1, ]
   ndiag.obs = calib.target$ndiag18.obs[-1, ]
@@ -37,65 +36,49 @@ obj <- function(calib.par, calpar.info, fixed, calib.target, valid.target, plot=
   inc.all   = valid.target$obs.inc.all
   inc.msm   = valid.target$obs.inc.msm
   
+  ## Assigning parameter values for Morris method ##
+  vlist = fixed.list
+  vparameters = fixed
   
-  # save all the free parameters in par2
   par2   = as.list(leng)
-  group2 = as.list(leng)
-  for(i in 1:length(leng)){
-    if (i==1) {
-      par2[[i]]   = calib.par[1:leng[i]]
-      group2[[i]] = groups[1:leng[i]]
+  
+  for(l in 1:length(leng)){
+    if (l==1) {
+      par2[[l]]   = calib.par[1:leng[l]]
     }
     else {
-      par2[[i]]   = calib.par[(sum(leng[1:(i-1)])+1):sum(leng[1:i])]
-      group2[[i]] = groups[(sum(leng[1:(i-1)])+1):sum(leng[1:i])]
+      par2[[l]]   = calib.par[(sum(leng[1:(l-1)])+1):sum(leng[1:l])]
     }
   }
+  
   names(par2)   = names
-  names(group2) = names
   
   # update parameter list with new free parameter values and save in par3
-  par3 = fixed
-  for (i in 1:length(names)){
-    if (length(unlist(fixed[names[i]]))==1) { # single parameter
-      par3[names[i]][[1]]=par2[names[i]][[1]]
+  
+  for (l in 1:length(names)){
+    if (length(unlist(vparameters[names[l]])) == 1) { # single parameter
+      vparameters[names[l]][[1]] = par2[names[l]][[1]]
     }
-    if (length(unlist(fixed[names[i]]))==9) { #pwid
-      for (j in 1:leng[i]) {
-        ind=which(group2[names[i]][[1]][j]==as.vector(fixed$names.pwid))
-        par3[names[i]][[1]][ind]=par2[names[i]][[1]][j]
+    if (par_info[par_info$parameter == names[l], ]$stratification == 3) { #parameters with 3 dimensions: gender, ethnicity, risk
+      for (j in 1:leng[l]) {
+        vlist[[names[l]]][vlist[[names[l]]]$gender == calpar[calpar$par == names[l], ][j, ]$gender & vlist[[names[l]]]$ethnicity == calpar[calpar$par == names[l], ][j,]$ethnicity & vlist[[names[l]]]$risk == calpar[calpar$par == names[l], ][j,]$risk, ]$pe = par2[names[l]][[1]][j]
       }}
-    if (length(unlist(fixed[names[i]]))==42) {#all groups
-      for (j in 1:leng[i]) {
-        ind=which(group2[names[i]][[1]][j]==names.gp)
-        par3[names[i]][[1]][ind]=par2[names[i]][[1]][j]
+    if (par_info[par_info$parameter == names[l], ]$stratification == 4) { #parameters with 4 dimensions: gender, ethnicity, risk, sexual intensity
+      for (j in 1:leng[l]) {
+        vlist[[names[l]]][vlist[[names[l]]]$gender == calpar[calpar$par == names[l], ][j, ]$gender & vlist[[names[l]]]$ethnicity == calpar[calpar$par == names[l], ][j,]$ethnicity & vlist[[names[l]]]$risk == calpar[calpar$par == names[l], ][j,]$risk & vlist[[names[l]]]$sexual.intensity == calpar[calpar$par == names[l], ][j,]$sexual.intensity, ]$pe = par2[names[l]][[1]][j]
       }}
-    if (length(unlist(fixed[names[i]]))==18 & #18 MSM groups
-        (names[i] %in% c("nsG","uis","prop.pre"))) {
-      for (j in 1:leng[i]) { # find all groups in msm & msm-pwid
-        msm.gp=group2[names[i]][[1]][j]
-        msm.cat=substr(msm.gp,5,nchar(msm.gp)) #excluding "MSM" in the name
-        ind=grep(msm.cat,names.gp)
-        ind2=intersect(ind,all.msm)
-        par3[names[i]][[1]][ind2]=par2[names[i]][[1]][j]
-      }}
-    if (length(unlist(fixed[names[i]]))==18 & #18 groups
-        !(names[i] %in% c("nsG","uis","prop.pre"))) {
-      for (j in 1:leng[i]) {
-        ind=which(group2[names[i]][[1]][j]==as.vector(fixed$names18))
-        par3[names[i]][[1]][ind]=par2[names[i]][[1]][j]
-      }}
-    if (names[i] %in% c("ass.eO","ass.eS")) {
-      for (j in 1:leng[i]) {
-        ind=which(group2[names[i]][[1]][j]==as.vector(fixed$names.e))
-        par3[names[i]][[1]][ind]=par2[names[i]][[1]][j]
-      }}
-    if (length(unlist(fixed[names[i]]))==3) { # white/black/hispanic
-      for (j in 1:leng[i]) {
-        ind=which(group2[names[i]][[1]][j]==c("white","black","hispanic"))
-        par3[names[i]][[1]][ind]=par2[names[i]][[1]][j]
+    if (par_info[par_info$parameter == names[l], ]$stratification == 1) { #parameters with 1 dimension: CD4
+      for (j in 1:leng[l]) {
+        vlist[[names[l]]][vlist[[names[l]]]$CD4 == calpar[calpar$par == names[l], ][j, ]$CD4, ]$pe = par2[names[l]][[1]][j]
       }}
   }
+  
+  source("parameterization.R")
+  if ("v.ssp" %in% names){
+    vparameters$v.ssp = vparameters$v.ssp * (vparameters$init.tot[gp18.gn$all.pwid]/ sum(vparameters$init.tot[gp18.gn$all.pwid])) 
+  }
+  
+  par3 = vparameters
 
   #parameters in "par3" overwrite ones in "fixed" if names are the same.
   out_euler <- euler(x, vt, ode_model, par3)[ ,-1]
