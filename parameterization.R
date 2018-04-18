@@ -2,6 +2,8 @@
 ## Parameterization for parameters that require manipulations                 ##
 ################################################################################
 
+#### theta.ad = theta.ai ####
+vparameters$theta.ad = vparameters$theta.ai
 
 #### Parameter in pwid (1st 18 in gp) domain ####
 pwid.gn = pwid.gn.fun (names.pwid)
